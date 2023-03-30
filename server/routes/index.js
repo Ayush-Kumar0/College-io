@@ -1,10 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
+
+// Homepage
 router.get('/', (req, res) => {
-    console.log(req.body);
-    res.send('This is the message sent from server to client.');
+    res.send('Homepage');
 });
+
+
+// Authenitcation route
+router.use('/auth', require('./auth'));
 
 
 module.exports = router;
