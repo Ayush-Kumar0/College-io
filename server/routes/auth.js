@@ -1,17 +1,18 @@
 const express = require('express');
 const router = express.Router();
+// const userController = require('../controllers/user_controller');
+const googleStrategy = require('../config/passport-google-oauth20-strategy');
 const passport = require('passport');
-const userController = require('../controllers/user_controller');
 
 
-// path='/auth/signup'
-router.post('/signup', userController.create);
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email', 'https://www.googleapis.com/auth/admin.directory.user.readonly'] }));
 
-// path='auth/login'
-router.post('/login', passport.authenticate('local', {}), userController.createSession);
-
-// path='auth/logout'
-router.get('/logout', userController.destroySession);
+router.get('/google/callback',
+    passport.authenticate('google', {
+        failureMessage: true,
+        failureRedirect: process.env.CLIENT_URL,
+        successRedirect: process.env.CLIENT_URL
+    }));
 
 
 module.exports = router;

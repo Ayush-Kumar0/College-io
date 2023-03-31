@@ -15,9 +15,15 @@ const db = require('./config/mongoose');
 
 // Authentication
 const passport = require('passport');
-const passportLocal = require('./config/passport-local-strategy');
 const session = require('express-session');
 const mongoStore = require('connect-mongo');
+const googleStrategy = require('./config/passport-google-oauth20-strategy');
+
+// Cors
+const cors = require('cors');
+
+
+require('https').globalAgent.options.rejectUnauthorized = true;
 
 
 /*====================================================================================================================================*/
@@ -50,6 +56,10 @@ app.use(session({
 // Passport functions
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+// Allowing cors
+app.use(cors());
 
 
 // Getting routes

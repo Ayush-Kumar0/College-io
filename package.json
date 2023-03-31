@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "concurrently": "^8.0.1"
+  },
+  "name": "college-io",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "both": "concurrently \"npm start --prefix server\" \"npm start --prefix client\"",
+    "client": "npm start --prefix client",
+    "server": "npm start --prefix server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ayush-Kumar0/College-io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ayush-Kumar0/College-io/issues"
+  },
+  "homepage": "https://github.com/Ayush-Kumar0/College-io#readme"
+}
