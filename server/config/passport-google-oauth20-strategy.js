@@ -3,6 +3,7 @@ const User = require('../models/user');
 const googleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require('passport');
 
+
 passport.use(new googleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
@@ -10,8 +11,6 @@ passport.use(new googleStrategy({
     passReqToCallback: true
 }, async (req, accessToken, refreshToken, profile, done) => {
     console.log(accessToken, refreshToken);
-
-    // TODO: check if gsuite education edition
 
     // Saving the user into database
     await saveUser(profile, done);
