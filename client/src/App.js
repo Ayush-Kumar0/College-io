@@ -1,37 +1,28 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { BrowserRouter } from 'react-router-dom';
 
+import { Login } from './components/Login';
+
+
+
+// const [user, setUser] = useState(null);
+// const handleLogin = async () => {
+//   window.open("https://localhost:8000/auth/google");
+// }
 function App() {
-  const [user, setUser] = useState(null);
+  const [login, setLogin] = useState(() => false);
 
-  const handleLogin = async () => {
-    window.open("https://localhost:8000/auth/google");
-  }
-
-  const handleLogout = async () => {
-    await axios.post('/auth/logout');
-    setUser(null);
-  }
-
-  const handleProfile = async () => {
-    const { data } = await axios.get('/api/profile');
-    setUser(data);
+  const handleLogin = (event) => {
+    setLogin(true);
   }
 
   return (
-    <div>
-      <h1>G Suite Login Example</h1>
-      {user ? (
-        <>
-          <p>Welcome, {user.name}</p>
-          <p>Organization: {user.orgName}</p>
-          <button onClick={handleLogout}>Logout</button>
-        </>
-      ) : (
-        <button onClick={handleLogin}>Login with G Suite</button>
-      )}
-      {user && <button onClick={handleProfile}>Get Profile</button>}
-    </div>
+    <>
+      <BrowserRouter>
+        <button onClick={handleLogin} className="bg-blue-600 rounded-md p-6">Login</button>
+        {login ? <Login /> : null}
+      </BrowserRouter>
+    </>
   );
 }
 
