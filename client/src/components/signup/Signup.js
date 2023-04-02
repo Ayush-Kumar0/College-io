@@ -84,7 +84,7 @@ function Signup() {
                 <div className='w-[90%] sm:w-[280px] md:w-[340px] flex flex-col text-gray-400 py-2'>
                     <label className='w-fit'>Password</label>
                     {/* <Tooltip title='Both passwords should be different'>
-                        <img src='/assets/exclamation.svg' alt='Err' />
+                        <img src='/assets/images/exclamation.svg' alt='Err' />
                     </Tooltip> */}
                     <input name='password' value={password} onChange={handlePassword} className='p-2 rounded-lg bg-gray-700 mt-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none' type="password" />
                 </div>
