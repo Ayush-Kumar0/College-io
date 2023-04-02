@@ -1,3 +1,4 @@
+import Navbar from "./components/Navbar"; 
 import React, { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -18,10 +19,15 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
+      {/* <BrowserRouter>
         <button onClick={handleLogin} className="bg-blue-600 rounded-md p-6">Login</button>
         {login ? <Login /> : null}
-      </BrowserRouter>
+      </BrowserRouter> */}
+
+      <div className="App">
+        <Navbar/>
+        <div>Sambvgdfkjasjk jkjdsfk</div>
+      </div>
     </>
   );
 }
