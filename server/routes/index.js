@@ -12,4 +12,10 @@ router.get('/', (req, res) => {
 router.use('/auth', require('./auth'));
 
 
+
+
+// Get all the available colleges
+router.use('/fetchCollegeNames', require('./fetchCollegeNames'));
+
+
 module.exports = router;

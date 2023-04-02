@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
+    },
+    college_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
     }
 }, {
     timestamps: true

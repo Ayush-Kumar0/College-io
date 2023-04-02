@@ -13,17 +13,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const db = require('./config/mongoose');
 
-// Authentication
-const passport = require('passport');
-const session = require('express-session');
-const mongoStore = require('connect-mongo');
-const googleStrategy = require('./config/passport-google-oauth20-strategy');
-
 // Cors
 const cors = require('cors');
-
-
-require('https').globalAgent.options.rejectUnauthorized = true;
 
 
 /*====================================================================================================================================*/
@@ -32,30 +23,6 @@ require('https').globalAgent.options.rejectUnauthorized = true;
 // Parsing the Body {application/json  and  application/x-www-form-urlencoded}
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
-// Using express-session
-app.use(session({
-    name: 'session',
-    secret: process.env.SECRET,
-    saveUninitialized: false,
-    resave: false,
-    cookie: {
-        maxAge: 30 * 24 * 60 * 60 * 1000, //30 days
-    },
-    store: new mongoStore(
-        {
-            client: mongoose.connection.getClient(),
-            autoRemove: 'disabled'
-        },
-        function (err) {
-            console.log(err || `Session cookie stored in db using mongoStore`);
-        })
-}));
-
-// Passport functions
-app.use(passport.initialize());
-app.use(passport.session());
 
 
 // Allowing cors
