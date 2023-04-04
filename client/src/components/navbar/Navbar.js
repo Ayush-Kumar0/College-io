@@ -1,5 +1,5 @@
 import { Component } from "react";
-import "../navbarStyles.css"
+import "./navbarStyles.css"
 
 class Navbar extends Component {
     state = { clicked: false };
@@ -38,4 +38,4 @@ class Navbar extends Component {
     }
 }
 
-export default Navbar;
+export { Navbar };
