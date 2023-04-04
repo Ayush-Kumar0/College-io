@@ -34,7 +34,7 @@ app.use('/', require('./routes'));
 
 
 // Listening to the HTTPs server
-const port = process.env.PORT;
+const port = process.env.PORT || 8000;
 if (process.env.KEY_PATH && process.env.CERT_PATH) {
     const key = fs.readFileSync(process.env.KEY_PATH);
     const cert = fs.readFileSync(process.env.CERT_PATH);
