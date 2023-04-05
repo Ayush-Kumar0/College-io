@@ -1,8 +1,15 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getToken, setToken, removeToken } from '../../hooks/authToken';
+import AuthContext from '../../contexts/auth/authContext';
 // import { Tooltip } from '@mui/material';
 
 
 function Signin() {
+    const nav = useNavigate();
+    const [login, setLogin] = useContext(AuthContext);
+
+
     const [email, setEmail] = useState(localStorage.getItem('email') ? localStorage.getItem('email') : '');
     const handleEmail = (e) => {
         localStorage.setItem('email', e.target.value);
@@ -20,13 +27,21 @@ function Signin() {
             email: email,
             password: password
         }
-        await fetch('https://localhost:8000/auth/createSession', {
+        let res = await fetch('https://localhost:8000/auth/createSession', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json'
             }
         });
+        let result = await res.json();
+        if (res.status === 200 && result['auth-token']) {
+            setToken('auth-token', result['auth-token']);  //storing jwt token in local storage
+            setLogin(true);
+            nav('/');
+        } else {
+            console.log('Could not authenticate');
+        }
     }
 
     const shouldEnable = () => {

@@ -1,8 +1,15 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getToken, setToken, removeToken } from '../../hooks/authToken';
+import AuthContext from '../../contexts/auth/authContext';
 // import { Tooltip } from '@mui/material';
 
 
 function Signup() {
+    const nav = useNavigate();
+    const [login, setLogin] = useContext(AuthContext);
+
+
     const [options, setOptions] = useState([]);
     useEffect(() => {
         console.log(options);
@@ -50,13 +57,21 @@ function Signup() {
             confirm_password: password2,
             college_id: selected
         }
-        await fetch('https://localhost:8000/auth/create', {
+        let res = await fetch('https://localhost:8000/auth/create', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json'
             }
         });
+        let result = await res.json();
+        if (res.status === 200 && result['auth-token']) {
+            setToken('auth-token', result['auth-token']);  //storing jwt token in local storage
+            setLogin(true);
+            nav('/');
+        } else {
+            console.log('Could not authenticate');
+        }
     }
 
     const shouldEnable = () => {

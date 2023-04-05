@@ -8,6 +8,7 @@ const app = express();
 
 // Body parsing
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 // Database
 const mongoose = require('mongoose');
@@ -23,6 +24,7 @@ const cors = require('cors');
 // Parsing the Body {application/json  and  application/x-www-form-urlencoded}
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 
 // Allowing cors

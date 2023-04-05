@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const { passwordStrength } = require('check-password-strength');
 
 module.exports.create = async function (req, res) {
+    console.log(req.cookies);
     if (req.body.password != req.body.confirm_password) {
         console.log(`Passwords don't match`);
         // req.flash('error', 'Unmatched Passwords');
@@ -41,6 +42,10 @@ module.exports.create = async function (req, res) {
                             }
                         };
                         const authtoken = jwt.sign(data, process.env.JWT_SECRET);
+                        // res.cookie('auth-token', authtoken, {
+                        //     expires: new Date(Date.now() + (30 * 24 * 60 * 60 * 1000)),
+                        //     path: '/'
+                        // });
                         return res.status(200).json({ 'auth-token': authtoken });
                     })
                     .catch((err) => {
@@ -135,4 +140,27 @@ async function verifyPassword(password) {
         return true;
     else
         return false;
+}
+
+
+
+module.exports.exists = async (req, res) => {
+    const token = req.body['auth-token'];
+    if (!token) {
+        res.status(401).json({});
+    }
+    try {
+        const data = jwt.verify(token, process.env.JWT_SECRET);
+        if (data && data.user) {
+            const user = await User.findById(data.user.id);
+            if (user)
+                return res.status(200).json({});
+            else
+                return res.status(403).json({});
+        }
+        else
+            return res.status(403).json({});
+    } catch (err) {
+        res.status(500).json({});
+    }
 }
