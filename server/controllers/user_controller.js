@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const College = require('../models/college');
 const fetch = require('node-fetch');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -25,28 +26,46 @@ module.exports.create = async function (req, res) {
     User.findOne({ email: req.body.email })
         .then(async (user) => {
             if (!user) {
+                // Creating the user
                 let newUser = new User();
                 newUser.name = req.body.name;
                 newUser.email = req.body.email;
                 await newUser.setPassword(req.body.password.toString());
                 newUser.setUsername(req.body.email.toString());
                 newUser.college_id = req.body.college_id;
+                newUser.feeds = [];
+                newUser.comments = [];
 
                 newUser.save()
                     .then((user) => {
                         console.log(`Created new user`);
-                        // req.flash('success', 'Logged Up Successfully');
-                        const data = {
-                            user: {
-                                id: user.id
-                            }
-                        };
-                        const authtoken = jwt.sign(data, process.env.JWT_SECRET);
-                        // res.cookie('auth-token', authtoken, {
-                        //     expires: new Date(Date.now() + (30 * 24 * 60 * 60 * 1000)),
-                        //     path: '/'
-                        // });
-                        return res.status(200).json({ 'auth-token': authtoken });
+                        College.findById(user.college_id)
+                            .then((college) => {
+                                college.students.push(user.id);
+                                // Saving the student id inside college document
+                                college.save()
+                                    .then(() => {
+                                        // req.flash('success', 'Logged Up Successfully');
+                                        const data = {
+                                            user: {
+                                                id: user.id,
+                                                college_id: user.college_id
+                                            }
+                                        };
+                                        const authtoken = jwt.sign(data, process.env.JWT_SECRET);
+                                        return res.status(200).json({ 'auth-token': authtoken });
+                                    })
+                                    .catch((err) => {
+                                        // req.flash('error', 'Error while creating account');
+                                        console.log(`Error while saving user in college`, err);
+                                        return res.status(500).json({});
+                                    });
+                            })
+                            .catch((err) => {
+                                // req.flash('error', 'Error while creating account');
+                                console.log(`Error while searching user's college`, err);
+                                return res.status(500).json({});
+                            });
                     })
                     .catch((err) => {
                         // req.flash('error', 'Error while creating account');
@@ -81,7 +100,8 @@ module.exports.createSession = function (req, res) {
                 // req.flash('warning', 'Account already exists');
                 const data = {
                     user: {
-                        id: user.id
+                        id: user.id,
+                        college_id: user.college_id
                     }
                 };
                 const authtoken = jwt.sign(data, process.env.JWT_SECRET);
@@ -98,6 +118,7 @@ module.exports.createSession = function (req, res) {
 
 
 
+// Email validation using an api from RapidAPI
 async function verifyEmail(email) {
     return true;
     const encodedParams = new URLSearchParams();
@@ -132,6 +153,7 @@ async function verifyEmail(email) {
     }
 }
 
+// Password validation
 async function verifyPassword(password) {
     return true;
     // 0=Too weak  ,  1=Weak  ,  2=Medium  ,  3=Strong
@@ -144,6 +166,7 @@ async function verifyPassword(password) {
 
 
 
+// Check if user still exists or not
 module.exports.exists = async (req, res) => {
     const token = req.body['auth-token'];
     if (!token) {

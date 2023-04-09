@@ -10,20 +10,21 @@ import './app.css';
 
 
 function App() {
+  const [login, setLogin] = useContext(AuthContext);
   return (
-    <>
-      <AuthState>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<><Navbar /><Home /></>} />
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<><Navbar /><Home /></>} />
+        {
+          !login ? <>
             <Route path='/signin' element={<Signin />} />
             <Route path='/signup' element={<Signup />} />
-            <Route path='/feed' element={<h1>Feed</h1>} />
-            <Route path='*' element={<h1>Error</h1>} />
-          </Routes>
-        </BrowserRouter>
-      </AuthState>
-    </>
+          </>
+            : <Route path='/feed' element={<h1>Feed</h1>} />
+        }
+        <Route path='*' element={<h1>Error</h1>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

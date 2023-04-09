@@ -29,6 +29,13 @@ app.use(cookieParser());
 
 // Allowing cors
 app.use(cors());
+// {
+//     origin: '*',
+//     methods: '*',
+//     credentials: true,
+//     allowedHeaders: '*',
+//     exposedHeaders: '*'
+// }
 
 
 // Getting routes

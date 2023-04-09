@@ -12,10 +12,14 @@ router.get('/', (req, res) => {
 router.use('/auth', require('./auth'));
 
 
-
-
 // Get all the available colleges
 router.use('/fetchCollegeNames', require('./fetchCollegeNames'));
+
+// Feeds
+router.use('/feed', require('./feed'));
+
+// Comment
+router.use('/comment', require('./comment'));
 
 
 module.exports = router;

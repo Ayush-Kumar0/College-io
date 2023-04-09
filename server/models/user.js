@@ -4,31 +4,24 @@ const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
     //Login fields
-    username: {
-        type: String,
-        unique: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    salt: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        required: true
-    },
+    username: { type: String, unique: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    salt: { type: String, required: true },
+    name: { type: String, required: true },
+    // Activity related fields
     college_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
-    }
+    },
+    feeds: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'feeds'
+    }],
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'comments'
+    }]
 }, {
     timestamps: true
 });
