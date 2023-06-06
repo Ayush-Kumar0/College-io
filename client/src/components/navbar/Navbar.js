@@ -1,18 +1,29 @@
 import { useContext, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import AuthContext from '../../contexts/auth/authContext';
 import AuthState from '../../contexts/auth/authState';
 import "./navbarStyles.css"
-import { removeToken } from "../../hooks/authToken";
 
-function Navbar() {
+function Navbar({ page }) {
+    const nav = useNavigate();
     // Login state
     const [login, setLogin] = useContext(AuthContext);
 
-    const handleSignout = (event) => {
-        event.preventDefault();
-        removeToken('auth-token');
-        setLogin(false);
+    const handleSignout = async (e) => {
+        e.preventDefault();
+        let res = await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/logout`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        });
+        if (res.status === 200) {
+            setLogin(false);
+            nav('/');
+        } else {
+            console.log('Could not logout');
+        }
     }
 
 
@@ -32,12 +43,12 @@ function Navbar() {
                 <div>
                     <ul id="navbar" className={hamburger ? "#navbar active" : "#navbar"}>
                         <li>
-                            <NavLink className="active" to="/">Home</NavLink>
+                            <NavLink className={page === 'Home' ? "active" : ""} to="/">Home</NavLink>
                         </li>
                         {
                             login ?
                                 <li>
-                                    <NavLink to="/feed">Feed</NavLink>
+                                    <NavLink className={page === 'Feed' ? "active" : ""} to="/feed">Feed</NavLink>
                                 </li>
                                 : null
                         }

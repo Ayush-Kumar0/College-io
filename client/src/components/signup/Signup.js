@@ -1,6 +1,5 @@
 import { React, useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getToken, setToken, removeToken } from '../../hooks/authToken';
 import AuthContext from '../../contexts/auth/authContext';
 // import { Tooltip } from '@mui/material';
 
@@ -14,21 +13,21 @@ function Signup() {
     useEffect(() => {
         console.log(options);
         (async function () {
-            let res = await fetch('https://localhost:8000/fetchCollegeNames');
-            let data = await res.json();
+            let res = await fetch(`${process.env.REACT_APP_SERVER_URL}/fetchCollegeNames`);
+            let data = await res.clone().json();
             setOptions(data);
         })();
     }, []);
 
-    const [name, setName] = useState(localStorage.getItem('name') ? localStorage.getItem('name') : '');
+    const [name, setName] = useState(sessionStorage.getItem('name') ? sessionStorage.getItem('name') : '');
     const handleName = (e) => {
-        localStorage.setItem('name', e.target.value);
+        sessionStorage.setItem('name', e.target.value);
         setName(e.target.value);
     }
 
-    const [email, setEmail] = useState(localStorage.getItem('email') ? localStorage.getItem('email') : '');
+    const [email, setEmail] = useState(sessionStorage.getItem('email') ? sessionStorage.getItem('email') : '');
     const handleEmail = (e) => {
-        localStorage.setItem('email', e.target.value);
+        sessionStorage.setItem('email', e.target.value);
         setEmail(e.target.value);
     }
 
@@ -42,9 +41,9 @@ function Signup() {
         setPassword2(e.target.value);
     }
 
-    const [selected, setSelected] = useState(localStorage.getItem('selected') ? localStorage.getItem('selected') : '-1');
+    const [selected, setSelected] = useState(sessionStorage.getItem('selected') ? sessionStorage.getItem('selected') : '-1');
     const handleCollege = (e) => {
-        localStorage.setItem('selected', e.target.value);
+        sessionStorage.setItem('selected', e.target.value);
         setSelected(e.target.value);
     }
 
@@ -57,19 +56,19 @@ function Signup() {
             confirm_password: password2,
             college_id: selected
         }
-        let res = await fetch('https://localhost:8000/auth/create', {
+        let res = await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/create`, {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            credentials: 'include'
         });
-        let result = await res.json();
-        if (res.status === 200 && result['auth-token']) {
-            setToken('auth-token', result['auth-token']);  //storing jwt token in local storage
+        if (res.status === 200) {
             setLogin(true);
-            nav('/');
+            window.location.href = '/';
         } else {
+            let result = await res.clone().json();
             console.log('Could not authenticate');
         }
     }

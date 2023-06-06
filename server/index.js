@@ -40,7 +40,7 @@ app.use('/', require('./routes'));
 
 // Listening to the HTTP server
 const port = process.env.PORT || 8000;
-app.listen(port, function (err) {
+const server = app.listen(port, function (err) {
     if (err) {
         return console.log(`Error while connecting to HTTP server on port : ${port}`);
     }

@@ -24,8 +24,6 @@ async function fetchUser(socket, next) {
     try {
         const data = jwt.verify(token, process.env.JWT_SECRET);
         socket.user = data.user;
-        let userdetails = await User.findById(socket.user.id);
-        socket.user.name = userdetails.name;
         next();
     } catch (err) {
         socket.user = null;

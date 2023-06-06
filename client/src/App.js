@@ -26,7 +26,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<><Navbar /><Home /></>} />
+        <Route path='/' element={<><Navbar page="Home" /><Home /></>} />
         {
           !login ? <>
             <Route path='/signin' element={<Signin />} />
