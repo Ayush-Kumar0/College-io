@@ -28,31 +28,32 @@ app.use(cookieParser());
 
 
 // Allowing cors
-app.use(cors());
-// {
-//     origin: '*',
-//     methods: '*',
-//     credentials: true,
-//     allowedHeaders: '*',
-//     exposedHeaders: '*'
-// }
+app.use(cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+}));
 
 
 // Getting routes
 app.use('/', require('./routes'));
 
 
-// Listening to the HTTPs server
+// Listening to the HTTP server
 const port = process.env.PORT || 8000;
-if (process.env.KEY_PATH && process.env.CERT_PATH) {
-    const key = fs.readFileSync(process.env.KEY_PATH);
-    const cert = fs.readFileSync(process.env.CERT_PATH);
-    const serverHTTPS = https.createServer({ key: key, cert: cert }, app);
+app.listen(port, function (err) {
+    if (err) {
+        return console.log(`Error while connecting to HTTP server on port : ${port}`);
+    }
+    else
+        console.log(`HTTP Server running on port : ${port}`, `http://localhost:${port}/`);
+});
 
-    serverHTTPS.listen(port, function (err) {
-        if (err) {
-            return console.log(`Error while connecting to HTTPs server on port : ${port}`);
-        }
-        console.log(`HTTPs Server running on port : ${port}`, `https://localhost:${port}/`);
-    });
-}
+// Using Sockets
+const io = require('socket.io')(server, {
+    cors: {
+        origin: process.env.CLIENT_URL,
+        credentials: true,
+        allowedHeaders: ['Cookie']
+    }
+});
+require('./sockets/index')(io);

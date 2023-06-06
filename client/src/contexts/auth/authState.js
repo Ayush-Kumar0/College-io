@@ -1,46 +1,49 @@
 import { React, useEffect, useState } from "react";
 import AuthContext from "./authContext";
-import { getToken, setToken, removeToken } from "../../hooks/authToken";
+import io from 'socket.io-client';
 
-
-const userExists = async (setLogin) => {
-    const exists = await (async function () {
+const userExists = async (setLogin, setSocket) => {
+    const login = await (async function () {
         try {
-            const token = getToken('auth-token');
-            if (token == null)
-                return false;
-            else {
-                let res = await fetch(`https://localhost:8000/auth/exists`, {
-                    method: 'POST',
-                    body: JSON.stringify({ 'auth-token': token }),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-                if (res.status === 200)
-                    return true;
-                else
-                    return false;
+            let res = await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/exists`, {
+                method: 'POST',
+                body: '',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            });
+            if (res.status === 200) {
+                let data = await res.clone().json();
+                return data.user;
             }
+            else
+                return undefined;
         } catch (err) {
             console.log('Error occured while verifying user');
-            return false;
+            return undefined;
         }
     })();
-    if (!exists) {
-        removeToken('auth-token');
+    if (login) {
+        setSocket(io(process.env.REACT_APP_SERVER_URL, {
+            withCredentials: true
+        }));
+    } else {
+        setSocket(undefined);
     }
-    setLogin(exists);
+    setLogin(login);
 }
 
 
 const AuthState = (props) => {
-    const [login, setLogin] = useState(false);
+    const [login, setLogin] = useState(undefined);
+    const [socket, setSocket] = useState(undefined);
     useEffect(() => {
-        userExists(setLogin);
+        userExists(setLogin, setSocket);
     }, []);
+
     return (
-        <AuthContext.Provider value={[login, setLogin]}>
+        <AuthContext.Provider value={[login, setLogin, socket]}>
             {props.children}
         </AuthContext.Provider>
     );

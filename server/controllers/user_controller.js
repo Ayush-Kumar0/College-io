@@ -6,26 +6,24 @@ const jwt = require('jsonwebtoken');
 const { passwordStrength } = require('check-password-strength');
 
 module.exports.create = async function (req, res) {
-    console.log(req.cookies);
+    // console.log(req.cookies);
     if (req.body.password != req.body.confirm_password) {
         console.log(`Passwords don't match`);
-        // req.flash('error', 'Unmatched Passwords');
         return res.status(400).json({});
     }
-
-    let validemail = await verifyEmail(req.body.email);
-    if (!validemail) {
-        return res.status(400).json({});
-    }
-    let validpass = await verifyPassword(req.body.password);
-    if (!validpass) {
-        return res.status(400).json({});
-    }
-
 
     User.findOne({ email: req.body.email })
         .then(async (user) => {
             if (!user) {
+                let validemail = await verifyEmail(req.body.email);
+                if (!validemail) {
+                    return res.status(400).json({});
+                }
+                let validpass = await verifyPassword(req.body.password);
+                if (!validpass) {
+                    return res.status(400).json({});
+                }
+
                 // Creating the user
                 let newUser = new User();
                 newUser.name = req.body.name;
@@ -53,7 +51,15 @@ module.exports.create = async function (req, res) {
                                             }
                                         };
                                         const authtoken = jwt.sign(data, process.env.JWT_SECRET);
-                                        return res.status(200).json({ 'auth-token': authtoken });
+                                        res.cookie('auth-token', authtoken, {
+                                            maxAge: 604800000, // 7 days
+                                            secure: true,
+                                            sameSite: 'None',
+                                            httpOnly: true,
+                                            domain: process.env.COOKIE_DOMAIN,
+                                            path: '/'
+                                        });
+                                        return res.status(200).json({});
                                     })
                                     .catch((err) => {
                                         // req.flash('error', 'Error while creating account');
@@ -87,7 +93,6 @@ module.exports.create = async function (req, res) {
 
 
 module.exports.createSession = function (req, res) {
-    // req.flash('success', 'Logged In Successfully');
     User.findOne({ email: req.body.email })
         .then(async (user) => {
             if (!user) {
@@ -105,7 +110,15 @@ module.exports.createSession = function (req, res) {
                     }
                 };
                 const authtoken = jwt.sign(data, process.env.JWT_SECRET);
-                return res.status(200).json({ 'auth-token': authtoken });
+                res.cookie('auth-token', authtoken, {
+                    maxAge: 604800000, // 7 days
+                    secure: true,
+                    sameSite: 'None',
+                    httpOnly: true,
+                    domain: process.env.COOKIE_DOMAIN,
+                    path: '/'
+                });
+                return res.status(200).json({});
             }
         })
         .catch((err) => {
@@ -168,21 +181,69 @@ async function verifyPassword(password) {
 
 // Check if user still exists or not
 module.exports.exists = async (req, res) => {
-    const token = req.body['auth-token'];
+    const token = req.cookies['auth-token'];
     if (!token) {
-        res.status(401).json({});
+        return res.status(401).json({});
     }
     try {
         const data = jwt.verify(token, process.env.JWT_SECRET);
         if (data && data.user) {
             const user = await User.findById(data.user.id);
-            if (user)
-                return res.status(200).json({});
-            else
+            if (user) {
+                const data = {
+                    user: {
+                        id: user.id,
+                        name: user.name,
+                        username: user.username,
+                        email: user.email,
+                    }
+                };
+                return res.status(200).json(data);
+            }
+            else {
+                res.cookie('auth-token', '', {
+                    expires: Date.now(),
+                    secure: true,
+                    sameSite: 'None',
+                    httpOnly: true,
+                    domain: process.env.COOKIE_DOMAIN
+                });
                 return res.status(403).json({});
+            }
         }
-        else
+        else {
+            res.cookie('auth-token', '', {
+                expires: Date.now(),
+                secure: true,
+                sameSite: 'None',
+                httpOnly: true,
+                domain: process.env.COOKIE_DOMAIN
+            });
             return res.status(403).json({});
+        }
+    } catch (err) {
+        res.cookie('auth-token', '', {
+            expires: new Date(),
+            secure: true,
+            sameSite: 'None',
+            httpOnly: true,
+            domain: process.env.COOKIE_DOMAIN
+        });
+        res.status(500).json({});
+    }
+}
+
+
+module.exports.logout = async (req, res) => {
+    try {
+        res.cookie('auth-token', '', {
+            expires: new Date(),
+            secure: true,
+            sameSite: 'None',
+            httpOnly: true,
+            domain: process.env.COOKIE_DOMAIN
+        });
+        return res.status(200).json({});
     } catch (err) {
         res.status(500).json({});
     }
