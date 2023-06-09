@@ -7,9 +7,8 @@ const postContainer = document.querySelector('.post-container');
 const search = document.querySelector('[type="search"]');
 
 // create cards and update the UI
-function generatePost(post){
-  const returnPostDate = (date) => `${
-    ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+function generatePost(post) {
+  const returnPostDate = (date) => `${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
   const article = document.createElement('article');
   article.classList.add('post');
   article.innerHTML = `
@@ -37,7 +36,7 @@ function generatePost(post){
   return article;
 }
 
-function loadPosts(){
+function loadPosts() {
   const frag = document.createDocumentFragment();
   filteredPosts.slice(0, maxDisplayLimit).map((post) => frag.appendChild(generatePost(post)));
   postContainer.innerHTML = '';
@@ -55,24 +54,24 @@ function filterPosts() {
 
 // fetch the data
 async function fetchPosts() {
-    await fetch('./posts.json')
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then((data) => {
-          posts = data.sort((a, b) => new Date(b.meta.date) - new Date(a.meta.date));
-          filterPosts();
-        })
-        .catch((error) => {
-            console.error('There has been a problem with your fetch operation:', error);
-        });
+  await fetch('./posts.json')
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      posts = data.sort((a, b) => new Date(b.meta.date) - new Date(a.meta.date));
+      filterPosts();
+    })
+    .catch((error) => {
+      console.error('There has been a problem with your fetch operation:', error);
+    });
 }
-fetchPosts();
+await fetchPosts();
 // update number of posts with btn click
-function viewMorePosts(){
+function viewMorePosts() {
   maxDisplayLimit += POSTS_TO_SHOW;
   loadPosts();
 }
