@@ -103,7 +103,6 @@ const ActivityDetails = ({ description }) => {
                 {/* Comment writing box */}
                 <CommentWritingBox>
                     <TextField
-                        style={{ outline: 'none' }}
                         fullWidth
                         multiline
                         // rows={1}
