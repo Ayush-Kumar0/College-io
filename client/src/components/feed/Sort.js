@@ -6,6 +6,7 @@ const Div = styled.div`
     max-width: 250px;
     background-color: #ffffff1f;
     height: calc(100vh - 88px);
+    min-height: 500px;
     float: left;
 `;
 

@@ -28,6 +28,7 @@ function Feed() {
 const Container = styled.div`
     display: flex;
     flexDirection: column;
+    min-height: 500px;
 `;
 
 export default Feed;

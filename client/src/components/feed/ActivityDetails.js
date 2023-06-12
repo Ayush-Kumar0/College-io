@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, TextField, Button, Avatar, Box } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import styled from 'styled-components';
+
+const DetailsContainer = styled.div`
+  height: 100%;
+`;
 
 const CommentSection = styled.div`
   margin-top: 16px;
+`;
+
+const Comments = styled.div`
+    height: 18rem;
+    overflow-y: scroll;
 `;
 
 const CommentContainer = styled.div`
@@ -59,7 +69,32 @@ const CommentWritingBox = styled(Box)`
   }
 `;
 
-const ActivityDetails = ({ description }) => {
+const CommentSubmit = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+`;
+
+const CollapseIcon = styled(ExpandMoreIcon)`
+  && {
+    color: #fff;
+    position: relative;
+    vertical-align: bottom;
+    rotate: -180deg;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: rgba(34,34,34,0.8);
+    border-radius: 50%;
+    font-size: 32px;
+    z-index: 10;
+  }
+
+  &:hover {
+    background-color: rgba(34,34,34,1);
+  }
+`;
+
+const ActivityDetails = ({ description, handleCollapseActivity, index, expandedActivity }) => {
     const [newComment, setNewComment] = useState('');
 
     const handleCommentChange = (event) => {
@@ -72,60 +107,135 @@ const ActivityDetails = ({ description }) => {
         setNewComment('');
     };
 
-    return (
-        <div>
-            <Typography variant="body1">{description}</Typography>
-            <CommentSection>
-                {/* Render comments */}
-                <CommentContainer>
-                    <CommentAvatar src="avatar1.jpg" alt="John Doe" />
-                    <CommentContent>
-                        <CommentHeader>
-                            <CommentUsername variant="body2">John Doe</CommentUsername>
-                            <CommentTime variant="caption">2 hours ago</CommentTime>
-                        </CommentHeader>
-                        <CommentText variant="body2">Great activity! I enjoyed it a lot.</CommentText>
-                    </CommentContent>
-                </CommentContainer>
-                <CommentContainer>
-                    <CommentAvatar src="avatar2.jpg" alt="Jane Smith" />
-                    <CommentContent>
-                        <CommentHeader>
-                            <CommentUsername variant="body2">Jane Smith</CommentUsername>
-                            <CommentTime variant="caption">1 hour ago</CommentTime>
-                        </CommentHeader>
-                        <CommentText variant="body2">
-                            Thanks for organizing this. It was a wonderful experience.
-                        </CommentText>
-                    </CommentContent>
-                </CommentContainer>
+    useEffect(() => {
+        if (expandedActivity !== null && index === expandedActivity) {
+            // Scrolling to the bottom  comment
+            let x = document.getElementsByClassName('comments')[expandedActivity];
+            x.scrollTop = x.scrollHeight;
+            // Making submit button come into view
+            let y = document.getElementsByClassName('scrollinto')[expandedActivity];
+            y.scrollIntoView({ behavior: 'smooth', block: 'end', bottom: '10px' });
+            console.log(y);
+        }
+    }, [expandedActivity, index]);
 
-                {/* Comment writing box */}
-                <CommentWritingBox>
-                    <TextField
-                        fullWidth
-                        multiline
-                        // rows={1}
-                        maxRows={5}
-                        minRows={1}
-                        variant="outlined"
-                        placeholder="Write a comment..."
-                        value={newComment}
-                        onChange={handleCommentChange}
-                    />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        onClick={handleCommentSubmit}
-                        disabled={!newComment}
-                        style={{ marginTop: '8px' }}
-                    >
-                        Post Comment
-                    </Button>
-                </CommentWritingBox>
-            </CommentSection>
-        </div>
+    return (
+        <>
+            <DetailsContainer>
+
+                <Typography variant="body1">{description}</Typography>
+
+                <CommentSection>
+                    {/* Render comments */}
+                    <Comments className='comments'>
+                        <CommentContainer className='xy'>
+                            <CommentAvatar src="avatar1.jpg" alt="John Doe" />
+                            <CommentContent>
+                                <CommentHeader>
+                                    <CommentUsername variant="body2">John Doe</CommentUsername>
+                                    <CommentTime variant="caption">2 hours ago</CommentTime>
+                                </CommentHeader>
+                                <CommentText variant="body2">Great activity! I enjoyed it a lot.</CommentText>
+                            </CommentContent>
+                        </CommentContainer>
+                        <CommentContainer>
+                            <CommentAvatar src="avatar1.jpg" alt="John Doe" />
+                            <CommentContent>
+                                <CommentHeader>
+                                    <CommentUsername variant="body2">John Doe</CommentUsername>
+                                    <CommentTime variant="caption">2 hours ago</CommentTime>
+                                </CommentHeader>
+                                <CommentText variant="body2">Great activity! I enjoyed it a lot.</CommentText>
+                            </CommentContent>
+                        </CommentContainer>
+                        <CommentContainer>
+                            <CommentAvatar src="avatar1.jpg" alt="John Doe" />
+                            <CommentContent>
+                                <CommentHeader>
+                                    <CommentUsername variant="body2">John Doe</CommentUsername>
+                                    <CommentTime variant="caption">2 hours ago</CommentTime>
+                                </CommentHeader>
+                                <CommentText variant="body2">Great activity! I enjoyed it a lot.</CommentText>
+                            </CommentContent>
+                        </CommentContainer>
+                        <CommentContainer>
+                            <CommentAvatar src="avatar1.jpg" alt="John Doe" />
+                            <CommentContent>
+                                <CommentHeader>
+                                    <CommentUsername variant="body2">John Doe</CommentUsername>
+                                    <CommentTime variant="caption">2 hours ago</CommentTime>
+                                </CommentHeader>
+                                <CommentText variant="body2">Great activity! I enjoyed it a lot.</CommentText>
+                            </CommentContent>
+                        </CommentContainer>
+                        <CommentContainer>
+                            <CommentAvatar src="avatar1.jpg" alt="John Doe" />
+                            <CommentContent>
+                                <CommentHeader>
+                                    <CommentUsername variant="body2">John Doe</CommentUsername>
+                                    <CommentTime variant="caption">2 hours ago</CommentTime>
+                                </CommentHeader>
+                                <CommentText variant="body2">Great activity! I enjoyed it a lot.</CommentText>
+                            </CommentContent>
+                        </CommentContainer>
+                        <CommentContainer>
+                            <CommentAvatar src="avatar1.jpg" alt="John Doe" />
+                            <CommentContent>
+                                <CommentHeader>
+                                    <CommentUsername variant="body2">John Doe</CommentUsername>
+                                    <CommentTime variant="caption">2 hours ago</CommentTime>
+                                </CommentHeader>
+                                <CommentText variant="body2">Great activity! I enjoyed it a lot.</CommentText>
+                            </CommentContent>
+                        </CommentContainer>
+                        <CommentContainer>
+                            <CommentAvatar src="avatar2.jpg" alt="Jane Smith" />
+                            <CommentContent>
+                                <CommentHeader>
+                                    <CommentUsername variant="body2">Jane Smith</CommentUsername>
+                                    <CommentTime variant="caption">1 hour ago</CommentTime>
+                                </CommentHeader>
+                                <CommentText variant="body2">
+                                    Thanks for organizing this. It was a wonderful experience.
+                                </CommentText>
+                            </CommentContent>
+                        </CommentContainer>
+                    </Comments>
+
+                    {/* Comment writing box */}
+                    <CommentWritingBox>
+                        <TextField
+                            fullWidth
+                            multiline
+                            // rows={1}
+                            maxRows={5}
+                            minRows={1}
+                            variant="outlined"
+                            placeholder="Write a comment..."
+                            value={newComment}
+                            onChange={handleCommentChange}
+                        />
+
+                        <CommentSubmit>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                size="small"
+                                onClick={handleCommentSubmit}
+                                disabled={!newComment}
+                                style={{ marginTop: '8px' }}
+                            >
+                                Post Comment
+                            </Button>
+                            <CollapseIcon onClick={handleCollapseActivity} />
+                        </CommentSubmit>
+                    </CommentWritingBox>
+
+                </CommentSection>
+
+            </DetailsContainer>
+            <div className='scrollinto'></div>
+        </>
     );
 };
 

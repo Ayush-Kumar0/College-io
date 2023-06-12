@@ -47,6 +47,7 @@ const Activitylist = () => {
 const Container = styled.div`
     overflow-y: scroll;
     height: calc(100vh - 88px);
+    min-height: 500px;
     width: 100%;
     padding-left: 10px;
     padding-right: 10px;
