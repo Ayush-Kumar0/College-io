@@ -1,12 +1,12 @@
 {
   "dependencies": {
-    "concurrently": "^8.0.1"
+    "concurrently": "^8.0.1",
+    "react": "^18.2.0"
   },
   "name": "college-io",
   "description": "",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "both": "concurrently \"npm start --prefix server\" \"npm start --prefix client\"",
     "client": "npm start --prefix client",
