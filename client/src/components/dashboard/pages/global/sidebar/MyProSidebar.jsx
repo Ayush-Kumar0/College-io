@@ -143,7 +143,7 @@ const MyProSidebar = () => {
                   alt="profile user"
                   width="120px"
                   height="100px"
-                  src={"../../assets/user.png"}
+                  src={"/assets/images/user.png"}
                   style={{ cursor: "pointer", borderRadius: "20%" }}
                 />
               </Box>
@@ -162,28 +162,28 @@ const MyProSidebar = () => {
           <Box paddingLeft={collapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"
-              to="/"
+              to="/dashboard"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-             <Item
+            <Item
               title="Create New Post"
-              to="/form"
+              to="/dashboard/form"
               icon={<ReceiptOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            /> 
+            />
             <Item
               title="Your Created Posts"
-              to="/faq"
+              to="/dashboard/faq"
               icon={<HelpOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Your Friends"
-              to="/team"
+              to="/dashboard/team"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -203,7 +203,7 @@ const MyProSidebar = () => {
               setSelected={setSelected}
             /> */}
 
-           
+
             {/* <Item
               title="Calendar"
               to="/calendar"
