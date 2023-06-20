@@ -68,14 +68,13 @@ window.addEventListener('scroll', scrollActive);
 (function () {
     window.sr = ScrollReveal({
         distance: '60px',
-        duration: 2500,
-        delay: 200,
-        reset: true
+        duration: 1300,
+        delay: 180
     });
 
-    sr.reveal(`.home__header, .section__title`, { distance: '100px' }, { delay: 200 });
-    sr.reveal(`.home__footer`, { delay: 200 });
-    sr.reveal(`.home__img`, { delay: 200, origin: 'bottom', distance: '150px' });
+    sr.reveal(`.home__header, .section__title`, { distance: '100px' }, { delay: 180 });
+    sr.reveal(`.home__footer`, { delay: 180 });
+    sr.reveal(`.home__img`, { delay: 180, origin: 'bottom', distance: '150px' });
 
     sr.reveal(`.sponsor__img, .products__card, .footer__logo, .footer__content, .footer__copy`, { origin: 'top', interval: 70 });
     sr.reveal(`.specs__data, .discount__animate`, { origin: 'left', interval: 70 });
