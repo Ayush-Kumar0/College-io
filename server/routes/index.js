@@ -11,7 +11,6 @@ router.get('/', (req, res) => {
 // Authenitcation route
 router.use('/auth', require('./auth'));
 
-
 // Get all the available colleges
 router.use('/fetchCollegeNames', require('./fetchCollegeNames'));
 
