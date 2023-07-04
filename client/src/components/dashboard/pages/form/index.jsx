@@ -55,7 +55,7 @@ const Form = () => {
 
   return (
     <Box m="20px">
-      <Header heading="CREATE NEW FEED" subheading="Whats on your mind?" />
+      <Header title="CREATE NEW FEED" subtitle="Whats on your mind?" />
 
       <form onSubmit={handleFormSubmit}>
         <Box
