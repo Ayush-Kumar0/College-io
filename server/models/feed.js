@@ -10,6 +10,7 @@ const feedSchema = new mongoose.Schema({
     tag: String,
     heading: String,
     description: String,
+    deadline:Number,
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'comments'

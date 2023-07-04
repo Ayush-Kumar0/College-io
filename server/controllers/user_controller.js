@@ -11,7 +11,7 @@ module.exports.create = async function (req, res) {
         console.log(`Passwords don't match`);
         return res.status(400).json({});
     }
-
+    
     User.findOne({ email: req.body.email })
         .then(async (user) => {
             if (!user) {
@@ -33,7 +33,7 @@ module.exports.create = async function (req, res) {
                 newUser.college_id = req.body.college_id;
                 newUser.feeds = [];
                 newUser.comments = [];
-
+                
                 newUser.save()
                     .then((user) => {
                         console.log(`Created new user`);
@@ -232,6 +232,10 @@ module.exports.exists = async (req, res) => {
         res.status(500).json({});
     }
 }
+
+
+
+
 
 
 module.exports.logout = async (req, res) => {

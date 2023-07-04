@@ -9,9 +9,11 @@ module.exports.create = async (req, res) => {
         tag: req.body.tag,
         heading: req.body.heading,
         description: req.body.description,
+        deadline: req.body.deadline,
         comments: []
+    
     });
-
+    
     // Saving feed in 'feeds' database
     newFeed.save()
         .then((newFeed) => {
@@ -61,3 +63,9 @@ module.exports.create = async (req, res) => {
             res.status(500).json({});
         });
 }
+
+
+
+
+
+
