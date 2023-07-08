@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Card, CardContent, Typography, Collapse, Box } from '@mui/material';
+import { Box, useTheme } from "@mui/material";
+import Header from "../../components/Header";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { tokens } from "../../theme";
 import styled from 'styled-components';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ActivityDetails from './ActivityDetails';
-
+// import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ActivityDetails from '../../../feed/ActivityDetails.js';
+import React, { useEffect, useState } from 'react';
+import { Card, CardContent, Collapse } from '@mui/material';
+//idapdj
 const ActivityBox = styled(Box)`
   ${'' /* height: ${({ expanded }) => (expanded === 'true' ? 'calc(100vh - 108px)' : 'initial')}; */}
 `;
@@ -53,14 +58,43 @@ const ExpandedContent = styled.div`
 `;
 
 
-const Activities = ({ activities }) => {
+const activities = [
+  {
+    title: 'Activity 1',
+    type: 'Type A',
+    createdBy: 'User 1',
+    creationTime: '2023-06-01',
+    activeTill: '2023-06-10',
+  },
+  {
+    title: 'Activity 1',
+    type: 'Type A',
+    createdBy: 'User 1',
+    creationTime: '2023-06-01',
+    activeTill: '2023-06-10',
+  },
+  {
+    title: 'Activity 1',
+    type: 'Type A',
+    createdBy: 'User 1',
+    creationTime: '2023-06-01',
+    activeTill: '2023-06-10',
+  },
+  {
+    title: 'Activity 1',
+    type: 'Type A',
+    createdBy: 'User 1',
+    creationTime: '2023-06-01',
+    activeTill: '2023-06-10',
+  },
+  // Add more activity objects as needed
+];
+
+const Feeds = () => {
   const [expandedActivity, setExpandedActivity] = useState(null);
 
   const handleExpandActivity = (e, index) => {
     setExpandedActivity(index);
-    // let target = e.target.parentElement;
-    // console.log(target);
-    // target?.scrollIntoView({ behavior: 'smooth', offset: { top: '10px' }, easing: 'swing' });
   };
 
   const handleCollapseActivity = (e, index) => {
@@ -68,7 +102,9 @@ const Activities = ({ activities }) => {
   };
 
   return (
-    <>
+    <Box m="20px">
+      <Header title="Your Posts" subtitle="Recently Created Post" />
+
       {activities.map((activity, index) => (
         <ActivityBox key={index} expanded={(index === expandedActivity).toString()}>
           <StyledCard>
@@ -94,9 +130,10 @@ const Activities = ({ activities }) => {
           </StyledCard>
         </ActivityBox>
       ))}
-    </>
+
+
+    </Box>
   );
 };
 
-
-export default Activities;
+export default Feeds;

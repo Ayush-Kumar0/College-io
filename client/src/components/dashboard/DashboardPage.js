@@ -5,10 +5,10 @@ import { MyProSidebarProvider } from "./pages/global/sidebar/sidebarContext";
 
 import Topbar from "./pages/global/Topbar";
 
-import Dashboard from "./pages/dashboard";
-import Form from "./pages/form";
-import FAQ from "./pages/faq";
-import Team from "./pages/team";
+// import Dashboard from "./pages/dashboard";
+// import Form from "./pages/form";
+// import FAQ from "./pages/faq";
+// import Team from "./pages/team";
 import { Navbar } from "../navbar/Navbar";
 
 const Dashboard2 = () => {
@@ -19,21 +19,19 @@ const Dashboard2 = () => {
         <CssBaseline />
         <Navbar page="Dashboard" />
         <MyProSidebarProvider>
-          <div style={{ height: "100%", width: "100%" }}>
+          <div style={{ height: "100vh", width: "100%" }}>
             <main>
+
               <Topbar />
-              <Outlet />
-              {/* <Routes>
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="team" element={<Team />} />
-                <Route path="form" element={<Form />} />
-                <Route path="faq" element={<FAQ />} />
-              </Routes> */}
+              <div style={{ height: 'calc(100vh - 71.75px)', overflowY: 'scroll' }}>
+                <Outlet />
+              </div>
+
             </main>
           </div>
         </MyProSidebarProvider>
       </ThemeProvider>
-    </ColorModeContext.Provider>
+    </ColorModeContext.Provider >
   );
 };
 

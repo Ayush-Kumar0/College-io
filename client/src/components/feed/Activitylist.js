@@ -1,5 +1,4 @@
 import React from 'react';
-import { createTheme, ThemeProvider } from '@mui/material';
 import Activities from './Activities';
 import styled from 'styled-components';
 

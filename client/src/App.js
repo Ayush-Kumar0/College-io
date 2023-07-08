@@ -18,7 +18,7 @@ import Feed from './components/feed/Feed';
 import DashboardPage from './components/dashboard/DashboardPage';
 import Dashboard from "./components/dashboard/pages/dashboard";
 import Form from "./components/dashboard/pages/form";
-import FAQ from "./components/dashboard/pages/faq";
+import Feeds from "./components/dashboard/pages/feeds";
 import Team from "./components/dashboard/pages/team";
 
 
@@ -43,20 +43,12 @@ function App() {
               <Route path='dashboard' element={<DashboardPage />} >
                 <Route index element={<Dashboard />} />
                 <Route path="form" element={<Form />} />
-                <Route path="faq" element={<FAQ />} />
+                <Route path="feeds" element={<Feeds />} />
                 <Route path="team" element={<Team />} />
-
-                {/* <Route path="contacts" element={<Contacts />} />
-                <Route path="invoices" element={<Invoices />} />
-                <Route path="bar" element={<Bar />} />
-                <Route path="pie" element={<Pie />} />
-                <Route path="line" element={<Line />} />
-                <Route path="calendar" element={<Calendar />} />
-                <Route path="geography" element={<Geography />} /> */}
               </Route>
             </>
         }
-        <Route path='*' element={<h1>Error</h1>} />
+        {/* <Route path='*' element={<h1>Error</h1>} /> */}
       </Routes>
     </BrowserRouter>
   );

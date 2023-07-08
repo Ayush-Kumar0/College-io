@@ -70,7 +70,7 @@ const Form = () => {
             fullWidth
             variant="filled"
             type="text"
-            label="heading of Feed"
+            label="Title of Feed"
             value={Title}
             onChange={handleTitle}
             name="heading"
@@ -80,7 +80,7 @@ const Form = () => {
             fullWidth
             variant="filled"
             type="text"
-            label="description"
+            label="Description"
             value={Description}
             onChange={handleDescription}
             name="description"
@@ -101,7 +101,7 @@ const Form = () => {
             fullWidth
             variant="filled"
             type="number"
-            label="Active duration"
+            label="Active Duration"
             value={Deadline}
             onChange={handleDeadline}
             name="deadline"
