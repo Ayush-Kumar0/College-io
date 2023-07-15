@@ -1,6 +1,8 @@
 const College = require('../models/college');
 const Feed = require('../models/feed');
 const User = require('../models/user');
+const mongoose = require('mongoose');
+// const findUserName = require('./findUserName');
 
 module.exports.create = async (req, res) => {
     const newFeed = new Feed({
@@ -62,6 +64,48 @@ module.exports.create = async (req, res) => {
             console.log('Error while saving feed\n', err);
             res.status(500).json({});
         });
+}
+
+// const findUserName = async (userId)=>{
+//     const data  = await User.findOne({_id: userId}).select({username:1})
+//         const username = data.username;
+//         return username; 
+// }
+
+const findUserName = ((userId)=>{
+    return new Promise(function(myResolve, myReject) {
+        User.findOne({_id: userId}).select({username:1}).then((data)=>{
+            const username = data.username;
+            myResolve(username); // when successful
+            myReject("NO USER");  // when error
+        })
+    });
+})
+
+module.exports.getFeed =async (req, res) => {
+    const clgId = '64286cc5b9eba5bdc39939e6';
+    let id = new mongoose.Types.ObjectId(clgId);
+    const data = await Feed.aggregate([{ $match: { college : id}},{$lookup :{
+        from: "users",
+        localField: "creator",
+        foreignField: "_id",
+        as: "username"
+    }}]);
+      
+    let newData = [];
+    await data.forEach((element)=>{
+        
+        const obj = {
+            creator : element.username[0].name,
+            college : element.college,
+            tag : element.tag,
+            heading : element.heading,
+            description : element.description,
+            deadline : element.deadline
+        }
+        newData.push(obj);
+    });
+    res.json(newData);
 }
 
 

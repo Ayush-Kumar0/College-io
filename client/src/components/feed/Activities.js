@@ -54,7 +54,8 @@ const ExpandedContent = styled.div`
 `;
 
 
-const Activities = ({ activities }) => {
+const Activities = ({ feeds }) => {
+  console.log(feeds);
     const [expandedActivity, setExpandedActivity] = useState(null);
 
     const handleExpandActivity = (e, index) => {
@@ -70,15 +71,15 @@ const Activities = ({ activities }) => {
 
     return (
         <>
-            {activities.map((activity, index) => (
+            {feeds.map((activity, index) => (
                 <ActivityBox key={index} expanded={(index === expandedActivity).toString()}>
                     <StyledCard>
                         <CardContent>
-                            <CardTitle variant="h6">{activity.title}</CardTitle>
-                            <Typography variant="body2">{activity.type}</Typography>
-                            <Typography variant="body2">Created by: {activity.createdBy}</Typography>
-                            <Typography variant="body2">Creation time: {activity.creationTime}</Typography>
-                            <Typography variant="body2">Active till: {activity.activeTill}</Typography>
+                            <CardTitle variant="h6">{activity.heading}</CardTitle>
+                            {/* <Typography variant="body2">{activity.description}</Typography> */}
+                            <Typography variant="body2">Created by: {activity.creator}</Typography>
+                            <Typography variant="body2">Tag: {activity.tag}</Typography>
+                            <Typography variant="body2">Active till: {activity.deadline}</Typography>
                             {index !== expandedActivity ?
                                 <ExpandIcon
                                     expanded={(index === expandedActivity).toString()}

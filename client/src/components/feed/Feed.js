@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { Navbar } from '../navbar/Navbar';
 import Sort from './Sort';
@@ -11,14 +11,26 @@ const darkTheme = createTheme({
     },
 });
 
+
+
+
 function Feed() {
+    const [feed ,setFeed] = useState([]);
+    useEffect(async ()=>{
+        const url = "http://localhost:8000/feed";
+        const response = await fetch(url, {
+            method: "GET", 
+          });
+        const result = await response.json();
+          setFeed(result);
+    },[])
     return (
         <>
             <Navbar page="Feed" />
             <ThemeProvider theme={darkTheme}>
                 <Container>
                     <Sort />
-                    <Activitylist />
+                    <Activitylist feed = {feed} />
                 </Container>
             </ThemeProvider>
         </>

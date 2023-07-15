@@ -4,7 +4,7 @@ import Activities from './Activities';
 import styled from 'styled-components';
 
 
-const Activitylist = () => {
+const Activitylist = (props) => {
     const activities = [
         {
             title: 'Activity 1',
@@ -39,7 +39,7 @@ const Activitylist = () => {
 
     return (
         <Container>
-            <Activities activities={activities} />
+            <Activities feeds={props.feed} />
         </Container>
     );
 };

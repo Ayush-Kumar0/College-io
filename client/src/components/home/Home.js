@@ -11,6 +11,7 @@ function Home() {
             document.head.removeChild(script);
         }
     }, []);
+    // console.log(req.user);
     return (
         <>
             {/* =============== HEADER =============== */}
