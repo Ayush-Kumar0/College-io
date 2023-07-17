@@ -28,7 +28,7 @@ function Feed() {
         <>
             <Navbar page="Feed" />
             <ThemeProvider theme={darkTheme}>
-                <Container>
+                <Container style={{ backgroundColor: '#141b2d' }}>
                     <Sort />
                     <Activitylist feed = {feed} />
                 </Container>

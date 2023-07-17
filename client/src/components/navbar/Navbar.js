@@ -42,7 +42,7 @@ function Navbar({ page }) {
                 </NavLink>
 
                 <div>
-                    <ul id="navbar" className={hamburger ? "#navbar active" : "#navbar"}>
+                    <ul id="navbar0" className={hamburger ? "#navbar0 active" : "#navbar0"}>
                         <li>
                             <NavLink className={page === 'Home' ? "active" : ""} to="/">Home</NavLink>
                         </li>
