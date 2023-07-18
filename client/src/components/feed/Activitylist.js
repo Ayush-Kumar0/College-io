@@ -1,44 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Activities from './Activities';
 import styled from 'styled-components';
 
 
-const Activitylist = (props) => {
-    const activities = [
-        {
-            title: 'Activity 1',
-            type: 'Type A',
-            createdBy: 'User 1',
-            creationTime: '2023-06-01',
-            activeTill: '2023-06-10',
-        },
-        {
-            title: 'Activity 1',
-            type: 'Type A',
-            createdBy: 'User 1',
-            creationTime: '2023-06-01',
-            activeTill: '2023-06-10',
-        },
-        {
-            title: 'Activity 1',
-            type: 'Type A',
-            createdBy: 'User 1',
-            creationTime: '2023-06-01',
-            activeTill: '2023-06-10',
-        },
-        {
-            title: 'Activity 1',
-            type: 'Type A',
-            createdBy: 'User 1',
-            creationTime: '2023-06-01',
-            activeTill: '2023-06-10',
-        },
-        // Add more activity objects as needed
-    ];
+const Activitylist = () => {
+    const [feeds, setFeeds] = useState([]);
+    useEffect(() => {
+        const url = `${process.env.REACT_APP_SERVER_URL}/feed/getFeeds`;
+        fetch(url, { method: "GET", credentials: 'include' })
+            .then(async res => {
+                console.log(res);
+                res = await res.clone().json();
+                return res;
+            })
+            .then((result) => {
+                console.log(result);
+                setFeeds(result);
+            })
+            .catch(() => console.log(`Error while fetching feeds.`));
+    }, []);
 
     return (
         <Container>
-            <Activities feeds={props.feed} />
+            <Activities activities={feeds} />
         </Container>
     );
 };

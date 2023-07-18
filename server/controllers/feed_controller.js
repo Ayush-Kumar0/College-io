@@ -1,8 +1,7 @@
+const { default: mongoose } = require('mongoose');
 const College = require('../models/college');
 const Feed = require('../models/feed');
 const User = require('../models/user');
-const mongoose = require('mongoose');
-// const findUserName = require('./findUserName');
 
 module.exports.create = async (req, res) => {
     const newFeed = new Feed({
@@ -13,9 +12,9 @@ module.exports.create = async (req, res) => {
         description: req.body.description,
         deadline: req.body.deadline,
         comments: []
-    
+
     });
-    
+
     // Saving feed in 'feeds' database
     newFeed.save()
         .then((newFeed) => {
@@ -72,40 +71,42 @@ module.exports.create = async (req, res) => {
 //         return username; 
 // }
 
-const findUserName = ((userId)=>{
-    return new Promise(function(myResolve, myReject) {
-        User.findOne({_id: userId}).select({username:1}).then((data)=>{
-            const username = data.username;
-            myResolve(username); // when successful
-            myReject("NO USER");  // when error
-        })
-    });
-})
+// const findUserName = ((userId) => {
+//     return new Promise(function (myResolve, myReject) {
+//         User.findOne({ _id: userId }).select({ username: 1 }).then((data) => {
+//             const username = data.username;
+//             myResolve(username); // when successful
+//             myReject("NO USER");  // when error
+//         })
+//     });
+// })
 
-module.exports.getFeed =async (req, res) => {
-    const clgId = '64286cc5b9eba5bdc39939e6';
-    let id = new mongoose.Types.ObjectId(clgId);
-    const data = await Feed.aggregate([{ $match: { college : id}},{$lookup :{
-        from: "users",
-        localField: "creator",
-        foreignField: "_id",
-        as: "username"
-    }}]);
-      
+module.exports.getFeeds = async (req, res) => {
+    let id = new mongoose.Types.ObjectId(req.user.college_id);
+    const data = await Feed.aggregate([{ $match: { college: id } }, {
+        $lookup: {
+            from: "users",
+            localField: "creator",
+            foreignField: "_id",
+            as: "username"
+        }
+    }]);
+
     let newData = [];
-    await data.forEach((element)=>{
-        
+    // Make it synchronous later
+    await data.forEach((element) => {
         const obj = {
-            creator : element.username[0].name,
-            college : element.college,
-            tag : element.tag,
-            heading : element.heading,
-            description : element.description,
-            deadline : element.deadline
+            createdBy: element.username[0].name,
+            college: element.college,
+            type: element.tag,
+            title: element.heading,
+            description: element.description,
+            activeTill: element.deadline,
+            creationTime: element.createdAt
         }
         newData.push(obj);
     });
-    res.json(newData);
+    res.status(200).json(newData);
 }
 
 

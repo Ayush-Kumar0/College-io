@@ -241,7 +241,7 @@ const ActivityDetails = ({ description, handleCollapseActivity, index, expandedA
                   color: "white",
                   "&.Mui-disabled": {
                     background: "white",
-                    color: "rgb(0 0 0 / 26%)"
+                    color: "rgb(0 0 0 / 45%)"
                   }
                 }}
               >

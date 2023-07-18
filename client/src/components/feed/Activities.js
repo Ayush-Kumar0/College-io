@@ -58,9 +58,6 @@ const Activities = ({ activities }) => {
 
   const handleExpandActivity = (e, index) => {
     setExpandedActivity(index);
-    // let target = e.target.parentElement;
-    // console.log(target);
-    // target?.scrollIntoView({ behavior: 'smooth', offset: { top: '10px' }, easing: 'swing' });
   };
 
   const handleCollapseActivity = (e, index) => {
@@ -69,7 +66,7 @@ const Activities = ({ activities }) => {
 
   return (
     <>
-      {activities.map((activity, index) => (
+      {activities && activities.map((activity, index) => (
         <ActivityBox key={index} expanded={(index === expandedActivity).toString()}>
           <StyledCard>
             <CardContent>
